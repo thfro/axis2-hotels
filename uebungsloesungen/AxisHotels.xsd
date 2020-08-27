@@ -5,7 +5,6 @@
     	<sequence>
     		<element name="roomCode" type="string"></element>
     		<element name="numberOfBeds" type="int"></element>
-    		<element name="isRoomWithTV" type="boolean"></element>
     		<element name="price" type="float"></element>
     	</sequence>
     </complexType>
@@ -16,7 +15,7 @@
     		<element name="hotelName" type="string"></element>
     		<element name="city" type="string"></element>
     		<element name="numberOfStars" type="int"></element>
-    		<element name="roomType" type="tns:RoomType" maxOccurs="unbounded" minOccurs="1"></element>
+    		<element name="roomTypes" type="tns:RoomType" maxOccurs="unbounded" minOccurs="1"></element>
     	</sequence>
     </complexType>
 
@@ -32,7 +31,40 @@
     <element name="GetHotelsResponse">
     	<complexType>
     		<sequence>
-    			<element name="hotels" type="tns:Hotel" maxOccurs="unbounded" minOccurs="1"></element>
+    			<element name="hotels" type="tns:Hotel" maxOccurs="unbounded" minOccurs="0"></element>
+    		</sequence>
+    	</complexType>
+    </element>
+
+    <complexType name="Reservation">
+    	<sequence>
+    		<element name="hotelCode" type="string"></element>
+    		<element name="roomCode" type="string"></element>
+    		<element name="arrivalDate" type="date"></element>
+    		<element name="departureDate" type="date"></element>
+    		<element name="numberOfRooms" type="int"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Confirmation">
+    	<sequence>
+    		<element name="status" type="string"></element>
+    		<element name="reservationNumber" type="int"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="CreateReservationRequest">
+    	<complexType>
+    		<sequence>
+    			<element name="reservation" type="tns:Reservation"></element>
+    		</sequence>
+    	</complexType>
+    </element>
+
+    <element name="CreateReservationResponse">
+    	<complexType>
+    		<sequence>
+    			<element name="confirmation" type="tns:Confirmation"></element>
     		</sequence>
     	</complexType>
     </element>
