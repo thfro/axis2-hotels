@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nrw="http://axishotels.de/booking/types">
+    <soapenv:Body>
+        <nrw:GetHotelsRequest>
+            <nrw:city>Frankfurt</nrw:city>
+            <nrw:numberOfStars>4</nrw:numberOfStars>
+        </nrw:GetHotelsRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

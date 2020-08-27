@@ -1,0 +1,19 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nrw="http://axishotels.de/booking/types">
+    <soapenv:Body>
+        <nrw:GetHotelsRequest>
+            <nrw:city>Frankfurt</nrw:city>
+            <nrw:numberOfStars>4</nrw:numberOfStars>
+        </nrw:GetHotelsRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+
+Achtung, folgende HTTP-Header müssen gesetzt werden:
+====================================================
+Content-Type: text/xml
+SOAPAction: http://axishotels.de/booking/service/GetHotels
+
+
+Aufruf mit curl:
+================
+curl --header "Content-type: text/xml" --header "SOAPAction: http://axishotels.de/booking/service/GetHotels" --data @soap.txt http://localhost:8080/axis2/services/BookingService
