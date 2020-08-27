@@ -4,7 +4,8 @@
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AxisHotels"
 	targetNamespace="http://axishotels.de/booking/service"
-	xmlns:xsd1="http://axishotels.de/booking/types" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	xmlns:xsd1="http://axishotels.de/booking/types"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 	<wsdl:types>
 		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 			<xsd:import namespace="http://axishotels.de/booking/types"
@@ -19,14 +20,26 @@
 		<wsdl:part name="parameters"
 			element="xsd1:GetHotelsResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:portType name="BookingInterface">
+	<wsdl:message name="CreateReservationRequest">
+		<wsdl:part name="parameters"
+			element="xsd1:CreateReservationRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="CreateReservationResponse">
+		<wsdl:part name="parameters"
+			element="xsd1:CreateReservationResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="BookingServiceInterface">
 		<wsdl:operation name="GetHotels">
 			<wsdl:input message="tns:GetHotelsRequest"></wsdl:input>
 			<wsdl:output message="tns:GetHotelsResponse"></wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="CreateReservation">
+			<wsdl:input message="tns:CreateReservationRequest"></wsdl:input>
+			<wsdl:output message="tns:CreateReservationResponse"></wsdl:output>
+		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="BookingServiceSoapBinding"
-		type="tns:BookingInterface">
+		type="tns:BookingServiceInterface">
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="GetHotels">
@@ -39,10 +52,22 @@
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="CreateReservation">
+			<soap:operation
+				soapAction="http://axishotels.de/booking/service/CreateReservation" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
 	</wsdl:binding>
 	<wsdl:service name="BookingService">
-		<wsdl:port name="BookingServiceSoapPort" binding="tns:BookingServiceSoapBinding">
-			<soap:address location="http://www.example.org/" />
+		<wsdl:port name="BookingServiceSoapPort"
+			binding="tns:BookingServiceSoapBinding">
+			<soap:address
+				location="http://localhost:8080/axis2/services/BookingService" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
