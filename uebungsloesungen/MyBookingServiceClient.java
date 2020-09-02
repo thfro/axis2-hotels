@@ -5,6 +5,9 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 
+import org.apache.axis2.client.Options;
+import org.apache.axis2.transport.http.HTTPConstants;
+
 import de.axishotels.booking.types.CreateReservationRequest;
 import de.axishotels.booking.types.CreateReservationResponse;
 import de.axishotels.booking.types.GetHotelsRequest;
@@ -17,6 +20,14 @@ public class MyBookingServiceClient {
 	public static void main(String[] args) throws Exception {
 		BookingServiceStub stub = new BookingServiceStub("http://localhost:8080/axis2/services/BookingService");
 
+		// set HTTP timeout
+		// => https://axis.apache.org/axis2/java/core/docs/http-transport.html#timeout_config
+		Options options = new Options();
+		Integer timeOutInMilliSeconds = 1000;
+		options.setProperty(HTTPConstants.SO_TIMEOUT, timeOutInMilliSeconds);
+		options.setProperty(HTTPConstants.CONNECTION_TIMEOUT, timeOutInMilliSeconds);
+		stub._getServiceClient().setOptions(options);
+		
 		GetHotelsRequest request = new GetHotelsRequest();
 		request.setCity("Hamburg");
 		request.setNumberOfStars(3);
@@ -44,14 +55,18 @@ public class MyBookingServiceClient {
 			
 			CreateReservationResponse response2 = stub.createReservation(request2);
 			System.out.println("Reservation number: " + response2.getConfirmation().getReservationNumber());
-			System.out.println("Status: " + response2.getConfirmation().getStatus());
-			
+			System.out.println("Status: " + response2.getConfirmation().getStatus());			
 		}
 		
 		// async
 		MyResultContainer resultContainer = new MyResultContainer();
 		MyCallbackHandler cb = new MyCallbackHandler(resultContainer);
 		stub.startgetHotels(request, cb);
+
+		MyResultContainer resultContainerCR = new MyResultContainer();
+		MyCallbackHandler cb2 = new MyCallbackHandler(resultContainerCR);
+		CreateReservationRequest request2 = new CreateReservationRequest();
+		stub.startcreateReservation(request2, cb2);
 
 		while (!resultContainer.isDone) {
 			System.out.println("Doing something different...");
